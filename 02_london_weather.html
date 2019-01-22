@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>London weather</title>
+
+	<style>
+	body {
+		background: #f4faff;
+		font-family: arial, sans-serif;
+		margin: 0 auto;
+	}
+
+	.container {
+		box-shadow: 5px 5px 5px #d2ecff;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%,-50%);
+		width: 300px;
+		border-radius: 15px;
+		border: 5px solid #fff;
+		padding:10px;
+		min-height: 400px;
+		color: #fff;
+		background-size: 120px, cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	h2 {
+		text-align: center;
+	}
+
+	span.location {
+		text-align: center;
+		margin-top: -15px;
+		font-size: 9pt;
+		display: block;
+	}
+
+	span.temperature {
+		display: block;
+		position: absolute;
+		bottom: 50px;
+		left: 50%;
+		transform: translateX(-50%);
+		font-weight: bold;
+		font-size: 42pt;
+	}
+
+	.rainy {
+		background-image: url(images/rainy.svg), linear-gradient(#59a5fe, #a3dcfe);
+	}
+
+	.snowing {
+		background-image: url(images/snowing.svg), linear-gradient(#59a5fe, #a3dcfe);
+	}
+
+	.showers {
+		background-image: url(images/showers.svg), linear-gradient(#59a5fe, #a3dcfe);
+	}
+
+	.rainy-night {
+		background-image: url(images/rainy.svg), linear-gradient(#170e48, #3a48b5);
+	}
+
+	.snowing-night {
+		background-image: url(images/snowing.svg), linear-gradient(#170e48, #3a48b5);
+	}
+
+	.showers-night {
+		background-image: url(images/showers.svg), linear-gradient(#170e48, #3a48b5);
+	}
+
+	.thunderstorm {
+		background-image: url(images/thunderstorm.svg), linear-gradient(#4d4d4d, #8a94b8);
+	}
+
+	.sunny {
+		background-image: url(images/sunny.svg), linear-gradient(#fea759, #fedfa3);
+	}
+
+	.night {
+		background-image: url(images/night.svg), linear-gradient(#170e48, #3a48b5);
+	}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<h2>Weather</h2>
+		<span class="location">London</span>
+		<span class="temperature">0&#176;</span>
+	</div>
+
+	<script>
+
+		const woeid = 44418;
+
+		fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+		.then(result => {
+			console.log(result);
+			return result.json();
+		})
+		.then (data => {
+			const today = data.consolidated_weather[0];
+			const container = document.querySelector('.container');
+
+			/* Day */
+			const currenDate = new Date();
+			let hour = currenDate.getHours();
+			let time;
+
+			if(time >= 0 && time < 6) {
+				time = 'Night';
+			} else if (time >=6 && time < 18){
+				time = 'Day';
+			} else {
+				time = 'Night';
+			}
+
+			const city = document.querySelector('.location');
+			const state = document.querySelector('h2');
+			const temperature = document.querySelector('.temperature');
+
+			city.innerHTML = data.title;
+			state.innerHTML = today.weather_state_name;
+			temperature.innerHTML = Math.trunc(today.the_temp) + '&#176;';
+
+			/* Background */
+
+			if(today.weather_state_name === 'Light Rain' && time === 'Day' || today.weather_state_name === 'Heavy Rain' && time === 'Day') {
+				container.classList.add('rainy');
+			} else if(today.weather_state_name === 'Light Rain' && time === 'Night' || today.weather_state_name === 'Heavy Rain' && time === 'Night') {
+				container.classList.add('rainy-night');
+			} else if(today.weather_state_name === 'Snow' && time === 'Day') {
+				container.classList.add('snowing');
+			} else if(today.weather_state_name === 'Snow' && time === 'Night') {
+				container.classList.add('snowing-night');
+			} else if(today.weather_state_name === 'Showers' && time === 'Day') {
+				container.classList.add('showers');
+			} else if(today.weather_state_name === 'Showers' && time === 'Night') {
+				container.classList.add('showers-night');
+			} else if(today.weather_state_name === 'Clear' && time === 'Day') {
+				container.classList.add('sunny');
+			} else if(today.weather_state_name === 'Clear' && time === 'Night') {
+				container.classList.add('night');
+			} else if (today.weather_state_name === 'Thunderstorm') {
+				container.classList.add('thunderstorm');
+			} else {
+				container.classList.add('sunny')
+			}
+		})
+		.catch(error => console.log(error))
+	</script>
+
+</body>
+</html>
