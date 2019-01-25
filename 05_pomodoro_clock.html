@@ -167,11 +167,6 @@
 			time = 2;
 			heading.innerHTML = "Take a break!"
 
-			console.log('Circle: ' + circle)
-			console.log('parentNode: ' + circle.parentNode);
-			console.log('Pomodoro: ' + document.querySelector('.pomodoro'));
-			console.log('breakTime')
-
 			let newCircle = circle.cloneNode(true);
 			circle.parentNode.replaceChild(newCircle, circle);
 			newCircle.style.animationDuration = "4s";
@@ -192,7 +187,6 @@
 					startTime();
 					clearInterval(pauseTime);
 				} else if(isPaused) {
-					console.log('isPaused')
 					document.querySelector('.start').addEventListener('click', breakTime);
 					clearInterval(pauseTime);
 				}
@@ -205,7 +199,6 @@
 		}
 
 		function stopTime() {
-			console.log('stopTime')
 			document.querySelector('.play').style.animationPlayState = "paused";
 			isPaused = true;
 		}
