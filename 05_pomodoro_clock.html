@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pomodoro Clock</title>
+
+	<style>
+	body {
+		font-family: Arial, sans-serif;
+		margin: 0 auto;
+		background: #f8f6f4;
+	}
+
+	button:focus {
+		outline:0;
+	}
+
+	.container, .countdown,
+	.minutes, .stop-alarm {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform:translate(-50%,-50%);
+		text-align: center;
+	}
+
+	h2 {
+		color: #635655;
+		position: absolute;
+		left: 50%;
+		top: 100px;
+		transform:translateX(-50%);
+	}
+
+	.clock {
+		width: 200px;
+		height: 200px;
+		border-radius: 200px;
+		border: 5px solid #f3e8e4;
+		margin-bottom: 30px;
+	}
+
+	svg {
+		position: absolute;
+		fill:none;
+		stroke:#FA7472;
+		stroke-width:10;
+		overflow: visible;
+		margin-left: -100px;
+	}
+
+	.pomodoro circle {
+		stroke-dasharray: 1000;
+		stroke-dashoffset: 1000;
+	}
+
+	.play {
+		animation: stroke 6s linear;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes stroke {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	button {
+		cursor: pointer;
+		border: 0px;
+		border-radius: 25px;
+		padding: 10px 25px;
+		background: #f97371;
+		text-transform: uppercase;
+		letter-spacing: 1;
+		color: #fff;
+		box-shadow: 5px 5px 10px #f5d9d8;
+	}
+
+	.countdown {
+		font-weight: bold;
+		font-size: 34pt;
+		margin-top: -30px;
+		color: #635655;
+	}
+
+	.minutes {
+		color: #b3a5a4;
+	}
+
+	.stop-alarm {
+		background: #fbb549;
+		width: 100px;
+		height: 100px;
+		border-radius: 100px;
+		line-height: 14pt;
+		font-weight: bold;
+		margin-top: -30px;
+		border: 5px solid #fff;
+		opacity: 0;
+	}
+
+</style>
+</head>
+<body>
+
+	<h2>Let's start</h2>
+
+	<div class="container">
+		<svg class="pomodoro" width="220px" height="220px" viewBox="0 0 180 180">
+			<circle class="st0" cx="85" cy="85" r="85"></circle>
+		</svg>
+		<div class="clock">
+			<span class="countdown">25</span>
+			<span class="minutes">minutes</span>
+		</div>
+		<button class="start">Start</button>
+		<button class="stop">Pause</button>
+	</div>
+
+	<button class="stop-alarm">Stop sound</button>
+
+	<script>
+		let time, newCircle, minutes;
+		const pomodoro = document.querySelector('.pomodoro');
+		const circle = document.querySelector('.pomodoro circle');
+		const audio = new Audio('images/alarm.mp3');
+		const countdown = document.querySelector('.countdown');
+		const heading = document.querySelector('h2');
+		let isPaused = false;
+
+		document.querySelector('.start').addEventListener('click', startTime);
+		document.querySelector('.stop').addEventListener('click', stopTime);
+		document.querySelector('.stop-alarm').addEventListener('click', stopAlarm)
+
+		function startTime() {
+
+			setTimeout(() => { 
+				time = 2;	
+				isPaused = false;
+
+				let workTime = setInterval(() => {				
+					if(time > 0 && !isPaused) {
+						minutes = time;
+						time--;
+						countdown.innerHTML = Math.trunc(minutes);
+						document.querySelector('.play').style.animationPlayState = "running";
+					} else if(time === 0) {
+						breakTime();
+						audio.play();
+						document.querySelector('.stop-alarm').style.opacity= "1";
+						clearInterval(workTime);
+					} else if (isPaused) {
+						clearInterval(workTime);
+					}
+				}, 1000);
+
+				circle.classList.add('play');
+				circle.style.animationDuration = "4s";
+
+				document.querySelector('svg').style.stroke = "#FA7472";
+				heading.innerHTML = "Time to work!";
+
+			}, 0);
+		}
+
+		function breakTime() {
+			time = 2;
+			heading.innerHTML = "Take a break!"
+
+			console.log('Circle: ' + circle)
+			console.log('parentNode: ' + circle.parentNode);
+			console.log('Pomodoro: ' + document.querySelector('.pomodoro'));
+			console.log('breakTime')
+
+			let newCircle = circle.cloneNode(true);
+			circle.parentNode.replaceChild(newCircle, circle);
+			newCircle.style.animationDuration = "4s";
+			document.querySelector('svg').style.stroke = "#fbb549";
+
+			let pauseTime = setInterval(() => {				
+				if(time > 0  && !isPaused) {
+					time--;
+					minutes = time;
+					countdown.innerHTML = minutes;
+				} else if(time === 0) {
+					newCircle.classList.remove('play');
+					newCircle.parentNode.replaceChild(circle, newCircle);
+
+					audio.play();
+					document.querySelector('.stop-alarm').style.opacity= "1";
+
+					startTime();
+					clearInterval(pauseTime);
+				} else if(isPaused) {
+					console.log('isPaused')
+					document.querySelector('.start').addEventListener('click', breakTime);
+					clearInterval(pauseTime);
+				}
+			}, 1000);
+		}
+
+		function stopAlarm() {
+			document.querySelector('.stop-alarm').style.opacity = "0"
+			audio.pause();
+		}
+
+		function stopTime() {
+			console.log('stopTime')
+			document.querySelector('.play').style.animationPlayState = "paused";
+			isPaused = true;
+		}
+	</script>
+
+</body>
+</html>

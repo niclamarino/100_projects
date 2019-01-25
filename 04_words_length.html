@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Words length</title>
+
+	<style>
+		body {
+			margin: 0 auto;
+			font-family: Arial, sans-serif;
+			background: #e9f0fc;
+		}
+
+		.container {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform:translate(-50%,-50%);
+		}
+
+		.inner {
+			display: flex;
+		}
+
+		textarea {
+			background: #fff;
+			border: 0px;
+			color: #687c94;
+			min-width: 300px;
+			padding: 10px;
+			font-size: 14pt;
+			border-radius: 5px 0px 0px 5px;
+			box-shadow: 5px 5px 5px #dee7f5;
+		}
+
+		textarea::placeholder {
+			color: #687c94;
+		}
+
+		button {
+			background: #687c94;
+			color: #fff;
+			font-size: 14pt;
+			letter-spacing: 2pt;
+			text-transform: uppercase;
+			border: 0px;
+			border-radius: 0px 5px 5px 0px;
+			box-shadow: 5px 5px 5px #dee7f5;
+			padding: 0px 20px;
+		}
+
+		p {
+			color: #687c94;
+			font-size: 14pt;
+		}
+
+		span {
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		<p>The total number of characters is: <span></span></p>
+		<div class="inner">
+			<textarea placeholder="Insert text here">Text</textarea>
+			<button>Calculate!</button>
+		</div>
+	</div>
+
+	<script>
+		document.querySelector('button').addEventListener('click', () => {
+			const text = document.querySelector('textarea').value;
+			const characters = text.split("").length;
+			document.querySelector('span').innerHTML = characters		
+		})
+
+	</script>
+	
+</body>
+</html>
