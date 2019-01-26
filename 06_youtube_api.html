@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Youtube API</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+	<style>
+	@mixin font-base {
+		padding: 0;
+		margin: 0;
+		line-height: 1.3;
+		font-weight: 600;
+	}
+
+	h4 {
+		margin-block-start: 0em;
+    	margin-block-end: 0em;
+    	margin: 0;
+    	font-size: 9pt;
+	}
+
+	p {
+		@include font-base;
+		color: grey;
+		font-size: 0.7rem;
+	}
+
+	body {
+		background-color: #f7f7f7;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	#video {
+		border-radius: 10px;
+    	overflow: hidden;
+	}
+
+	.container {
+		width: 560px;
+		margin: 0 auto;
+	}
+
+	header,
+	section {
+		text-align: center;
+		width: 560px;
+	}
+
+	section {
+		top: 50px;
+	}
+
+	.logo {
+		width: 120px;
+		padding: 10px;
+	}
+
+	main {
+
+	}
+
+	article {
+		display: inline-block;
+		width: calc(33.3% - 10px);
+		align-items: center;
+		border-radius: 8px;
+		margin: 0 auto;
+		cursor: pointer;
+		background-color: #fff;
+		box-shadow: 5px 5px 5px #f0f0f0;
+		margin: 5px;
+		transition: all 0.3 ease;
+	}
+
+	article:first-child,
+	article:nth-child(4),
+	article:nth-child(7) {
+		margin-left: 0px;
+	}
+
+	article:nth-child(3),
+	article:nth-child(6),
+	article:last-child {
+		margin-right: 0px;
+	}
+
+	article:hover {
+		box-shadow: none;
+	}
+
+	.thumb {
+		width: 100%;
+		border-radius: 4px;
+	}
+
+	.details {
+		padding: 5px;
+	}
+
+</style>
+</head>
+<body>
+
+	<div class="container">
+		
+		<header>
+			<img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_of_YouTube_%282015-2017%29.svg" alt="" class="logo">
+		</header>
+
+		<section id="video">
+			
+		</section>
+
+		<main>
+		</main>
+
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			const key = "API_CODE";
+			const playlistId = 'RDIskSdGXvUlM';
+			const cors = 'https://cors-anywhere.herokuapp.com/'
+			const URL = `${cors}https://www.googleapis.com/youtube/v3/playlistItems`;
+			let id, data;
+
+			const options = {
+				part: 'snippet',
+				key: key,
+				maxResults: 9,
+				playlistId: playlistId
+			}
+
+			loadVids();
+
+			function loadVids() {
+				$.getJSON(URL, options, function(data){
+					id = data.items[0].snippet.playlistId;
+
+					mainVid(id);
+					resultsLoop();
+
+					function resultsLoop() {
+
+						for (var i = 0; i < data.items.length; i++) {
+
+							let title = data.items[i].snippet.title;
+							var shortTitle = jQuery.trim(title).substring(0, 25).split(" ").slice(0, -1).join(" ") + "...";
+
+							$('main').append(`
+								<article data-video="${data.items[i].snippet.resourceId.videoId}" id="${data.items[i].snippet.resourceId.videoId}">
+								<img src="${data.items[i].snippet.thumbnails.default.url}" class="thumb">
+								<div class="details">
+								<h4>${shortTitle}</h4>
+								</div>
+								</article>
+							`);
+						}
+						$('article').on('click', function() {
+							let videoID = $(this).attr('id');
+
+							$('#video').html(`
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoID}?list=${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								`);
+						})
+					}
+
+				})
+			}
+
+			function mainVid() {
+				$('#video').html(`
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/IskSdGXvUlM?list=${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					`);
+			}
+
+			// function myFunction() {
+			// 	let videoID = $(this).attr('data-video');
+			// 	// videoID.slideToggle(300);
+			// 	// $('#'+videoID).slideToggle(300);
+			// 	alert('mammetaaaaa')
+			// 	// alert(id)
+			// 	// // $('#video').html(`
+			// 	// // 	<iframe width="560" height="315" src="https://www.youtube.com/embed/IskSdGXvUlM?list=${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+			// 	// // 	`)
+			// }
+
+		})
+	</script>
+
+</body>
+</html>
