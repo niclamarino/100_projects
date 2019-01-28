@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Gradient Css generator</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+	<style>
+	body {
+		marging: 0 auto;
+		background: #f7f7f7;
+		font-family: 'Roboto', sans-serif;
+		height: 100vh;
+	}
+</style>
+</head>
+<body>
+
+		<input type="range" min="0" max="255">
+		<input type="range" min="0" max="255">
+		<input type="range" min="0" max="255">
+
+		<input type="range" min="0" max="255">
+		<input type="range" min="0" max="255">
+		<input type="range" min="0" max="255">
+
+	<script>
+		const inputs = document.querySelectorAll('input')
+		const body = document.body;
+
+		for (var i = 0; i < inputs.length; i++) {
+			inputs[i].addEventListener('change', changeValue);
+			inputs[i].addEventListener('mousemove', changeValue);
+
+			function changeValue(){
+				
+				let r = inputs[0].value;
+				let g = inputs[1].value;
+				let b = inputs[2].value;
+				let rgb = r + ',' + g + ',' + b;
+
+				let r2 = inputs[3].value;
+				let g2 = inputs[4].value;
+				let b2 = inputs[5].value;	
+				let rgb2 = r2 + ',' + g2 + ',' + b2;		
+
+				body.style.backgroundImage = `linear-gradient(45deg, rgb(${rgb}), rgb(${rgb2}))`;
+
+			};
+		}
+	</script>
+	
+</body>
+</html>
