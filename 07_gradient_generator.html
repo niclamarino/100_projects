@@ -74,36 +74,32 @@
 	</div>
 
 	<script>
-		const inputs = document.querySelectorAll('input')
-		const color1 = document.querySelector('.color-1 div')
-		const color2 = document.querySelector('.color-2 div')
+		const inputs = document.querySelectorAll('input');
+		const color1 = document.querySelector('.color-1 div');
+		const color2 = document.querySelector('.color-2 div');
 		const body = document.body;
 
-		for (var i = 0; i < inputs.length; i++) {
-			inputs[i].addEventListener('change', changeValue);
-			inputs[i].addEventListener('mousemove', changeValue);
-
-			function changeValue(){
-
-				let r = inputs[0].value;
-				let g = inputs[1].value;
-				let b = inputs[2].value;
-				let rgb = r + ',' + g + ',' + b;
-
-				let r2 = inputs[3].value;
-				let g2 = inputs[4].value;
-				let b2 = inputs[5].value;	
-				let rgb2 = r2 + ',' + g2 + ',' + b2;		
-
-				body.style.backgroundImage = `linear-gradient(45deg, rgb(${rgb}), rgb(${rgb2}))`;
-
-				document.querySelector('.color-1 span').style.backgroundColor = `rgb(${rgb})`;
-				document.querySelector('.color-2 span').style.backgroundColor = `rgb(${rgb2})`;
-
-				color1.innerHTML = `rgb(${rgb}))`;
-				color2.innerHTML = `rgb(${rgb2}))`;
-			};
+		EventTarget.prototype.addEventListeners = function(eventNames, listener) {
+			eventNames.split(' ').forEach(event => this.addEventListener(event, listener, false))
 		}
+
+		inputs.forEach(input => input.addEventListeners('change mousemove', onChangeValue))
+
+		function onChangeValue() {
+			let rgb1 = [].slice.call(inputs, 0, 3).map(x => x.value).join(',')
+			let rgb2 = [].slice.call(inputs, 3, 6).map(x => x.value).join(',')
+			document.body.style.backgroundImage = `linear-gradient(45deg, rgb(${rgb1}), rgb(${rgb2}))`;
+
+
+			body.style.backgroundImage = `linear-gradient(45deg, rgb(${rgb1}), rgb(${rgb2}))`;
+
+			document.querySelector('.color-1 span').style.backgroundColor = `rgb(${rgb1})`;
+			document.querySelector('.color-2 span').style.backgroundColor = `rgb(${rgb2})`;
+
+			color1.innerHTML = `rgb(${rgb1}))`;
+			color2.innerHTML = `rgb(${rgb2}))`;
+		};
+		
 	</script>
 	
 </body>
