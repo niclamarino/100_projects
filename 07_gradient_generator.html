@@ -12,20 +12,71 @@
 		font-family: 'Roboto', sans-serif;
 		height: 100vh;
 	}
+
+	.container {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform:translate(-50%,-50%);
+		background-color: #fff;
+		padding:20px;
+		width: 300px;
+		border-radius: 00px 0px 50px 50px;
+		box-shadow: 5px 5px 10px rgb(0,0,0,0.2)
+	}
+
+	.container div {
+		margin: 10px 0px;
+	}
+
+	.second, .results {
+		margin-top: 30px!important;
+	}
+
+	.container input {
+		width: 93%;
+	}
+
+	.results span {
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		background-color: #ccc;
+		margin-right: 10px;
+	}
+
+	.color-1 div, .color-2 div {
+		display: inline-block;
+	}
 </style>
 </head>
 <body>
 
-		<input type="range" min="0" max="255">
-		<input type="range" min="0" max="255">
-		<input type="range" min="0" max="255">
+	<div class="container">
+		<div><label>R</label> <input type="range" min="0" max="255"></div>
+		<div><label>G</label> <input type="range" min="0" max="255"></div>
+		<div><label>B</label> <input type="range" min="0" max="255"></div>
 
-		<input type="range" min="0" max="255">
-		<input type="range" min="0" max="255">
-		<input type="range" min="0" max="255">
+		<div class="second"><label>R</label> <input type="range" min="0" max="255"></div>
+		<div><label>G</label> <input type="range" min="0" max="255"></div>
+		<div><label>B</label> <input type="range" min="0" max="255"></div>
+
+		<div class="results">
+			<div class="color-1">
+				<span></span> 
+				<div>Color #1</div>
+			</div>
+			<div class="color-2">
+				<span></span> 
+				<div>Color #2</div>
+			</div>
+		</div>
+	</div>
 
 	<script>
 		const inputs = document.querySelectorAll('input')
+		const color1 = document.querySelector('.color-1 div')
+		const color2 = document.querySelector('.color-2 div')
 		const body = document.body;
 
 		for (var i = 0; i < inputs.length; i++) {
@@ -33,7 +84,7 @@
 			inputs[i].addEventListener('mousemove', changeValue);
 
 			function changeValue(){
-				
+
 				let r = inputs[0].value;
 				let g = inputs[1].value;
 				let b = inputs[2].value;
@@ -46,6 +97,11 @@
 
 				body.style.backgroundImage = `linear-gradient(45deg, rgb(${rgb}), rgb(${rgb2}))`;
 
+				document.querySelector('.color-1 span').style.backgroundColor = `rgb(${rgb})`;
+				document.querySelector('.color-2 span').style.backgroundColor = `rgb(${rgb2})`;
+
+				color1.innerHTML = `rgb(${rgb}))`;
+				color2.innerHTML = `rgb(${rgb2}))`;
 			};
 		}
 	</script>
