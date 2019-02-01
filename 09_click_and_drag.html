@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Click and Drag to Scroll</title>
+
+	<style>
+
+	body {
+		background-color: #ededed;
+		margin: 0;
+	}
+
+	.items {
+		height: 200px;
+		width: 100%;
+		overflow-x: scroll;
+		overflow-y: hidden;
+		white-space: nowrap;
+		cursor: pointer;
+	}
+
+	.container {
+		position: absolute;
+    	left: 50%;
+    	width: 611px;
+		left: 50%;
+		top: 50%;
+		transform:translate(-50%,-50%);
+		text-align: center;overflow-x: scroll;
+		overflow-y: hidden;
+		white-space: nowrap;
+	}
+
+	.item {
+		width: 200px;
+		height: calc(100% - 40px);
+		display: inline-flex;
+	}
+
+	.item:nth-child(1),
+	.item:nth-child(6) {
+		background: #571845;
+	}
+
+	.item:nth-child(2),
+	.item:nth-child(7) {
+		background: #900c3e;
+	}
+	.item:nth-child(3),
+	.item:nth-child(8) {
+		background: #c70039;
+	}
+
+	.item:nth-child(4),
+	.item:nth-child(9) {
+		background: #ff5733;
+	}
+
+	.item:nth-child(5),
+	.item:nth-child(10) {
+		background: #ffc300;
+	}
+
+</style>
+</head>
+<body>
+
+
+	<div class="container">
+		<div class="items">
+			<div class="item item1"></div>
+			<div class="item item2"></div>
+			<div class="item item3"></div>
+			<div class="item item4"></div>
+			<div class="item item5"></div>
+			<div class="item item1"></div>
+			<div class="item item2"></div>
+			<div class="item item3"></div>
+			<div class="item item4"></div>
+			<div class="item item5"></div>
+		</div>
+	</div>
+
+	<script>
+
+		/* Set up Slider */
+		// const slideCount = document.querySelectorAll('li').length;
+		// const sliderWidth = document.querySelector('.slider').offsetWidth;
+		const slider = document.querySelector('.items');
+
+		// slider.style.width = sliderWidth * slideCount + 'px';
+
+		/* Drag to scroll */
+		let isDown = false;
+		let startX, scrollLeft;
+
+		slider.addEventListener('mousedown', e => {
+			isDown = true;
+			// slider.classList.add('active');
+			startX = e.pageX - slider.offsetLeft;
+			scrollLeft = slider.scrollLeft;
+		});
+
+		slider.addEventListener('mouseleave', () => {
+			isDown = false;
+			// slider.classList.remove('active');
+		});
+
+		slider.addEventListener('mouseup', () => {
+			isDown = false;
+			// slider.classList.remove('active');
+		});
+
+		slider.addEventListener('mousemove', function(e) {
+
+    if (!isDown) return;  // stop the fn from running
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 3;
+    slider.scrollLeft = scrollLeft - walk;
+    console.log(scrollLeft)
+});
+</script>
+
+</body>
+</html>
