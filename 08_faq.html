@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FAQ</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+	<style>
+	body {
+		margin: 0 auto;
+		background-color: #d7dbe3;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	.container {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform:translate(-50%,-50%);
+	}
+
+	ul {
+		background-color: #fff;
+		width: 300px;
+		padding:15px;
+	}
+
+	h3 {
+		cursor: pointer;
+	}
+
+	ul li {
+		list-style: none;
+	}
+
+	ul li p {
+		display: none;
+	}
+
+	h3:after {
+		content: '\f067';
+		font-family: fontAwesome;
+		font-size: 11pt;
+		float: right;
+	}
+
+	h3.down:after {
+		content: '\f063';
+		font-family: fontAwesome;
+		font-size: 11pt;
+		float: right;
+	}
+</style>
+
+</head>
+
+<body>
+
+	<div class="container">
+	<ul>
+		<li>
+			<h3>This is question #1</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt harum iusto, unde possimus vero quos cum sed saepe ipsa recusandae? Iusto autem ipsum voluptates, hic. Iure aperiam et facere illum!</p>
+		</li>
+		<li>
+			<h3>This is another question</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt harum iusto, unde possimus vero quos cum sed saepe ipsa recusandae? Iusto autem ipsum voluptates, hic. Iure aperiam et facere illum!</p>
+		</li>
+		<li>
+			<h3>Yet another question</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt harum iusto, unde possimus vero quos cum sed saepe ipsa recusandae? Iusto autem ipsum voluptates, hic. Iure aperiam et facere illum!</p>
+		</li>
+	</ul>
+</div>
+
+	<script>
+		$('h3').click( e => {
+			let element = e.target;
+			$(element).parent().find('p').slideToggle();
+			$(element).toggleClass('down');
+		})
+	</script>
+
+</body>
+</html>
