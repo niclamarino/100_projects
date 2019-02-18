@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Nodemailer Email Example</title>
+
+    <style>
+    	{{> bootstrap}}
+    </style>
+  </head>
+  <body>
+
+
+
+    <div class="container"><br />
+      <center><h1>Send The Email</h1></center>
+      <form action="/send-email" method="post">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="form-group col-md-4">
+            <label for="to">To:</label>
+            <input type="email" class="form-control" name="to">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="form-group col-md-4">
+            <label for="subject">Subject:</label>
+            <input type="text" class="form-control" name="subject">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+            <div class="form-group col-md-4">
+              <label for="body">Body:</label>
+              <textarea cols="5" rows="5"class="form-control" name="body"></textarea>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="form-group col-md-4">
+            <button type="submit" class="btn btn-success">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <center>
+    	<a href="https://appdividend.com/2017/08/11/send-email-in-node-js/" target="_blank">App created using this tutorial</a>
+    </center>
+  </body>
+</html>
