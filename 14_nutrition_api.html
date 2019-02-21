@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wallmalrt API</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+	<style>
+
+	body {
+		margin: 0 auto;
+		font-family: Arial, sans-serif;
+		background-color: #edeef0;
+		color: #7c7c7c;
+	}
+
+	li {
+		list-style:none;
+		cursor: pointer;
+	}
+
+	.container {
+		position: absolute;
+		left: 50%;
+		top: 20px;
+		transform:translateX(-50%);
+	}
+
+	input {
+		background: #fff;
+		border: 0px;
+		color: #687c94;
+		min-width: 300px;
+		padding: 10px;
+		font-size: 14pt;
+		border-radius: 5px 0px 0px 5px;
+		box-shadow: 5px 5px 10px #d1d3d8;
+	}
+
+	input::placeholder {
+		color: #687c94;
+	}
+
+	button {
+		background: #12c278;
+		color: #fff;
+		font-size: 14pt;
+		letter-spacing: 2pt;
+		text-transform: uppercase;
+		border: 0px;
+		border-radius: 0px 5px 5px 0px;
+		box-shadow: 5px 5px 10px #d1d3d8;
+		padding: 10px 20px;
+		margin-left: -5px;
+	}
+
+	.food-container {
+		display: flex;
+		margin: 100px;
+	}
+
+	.hints, .nutritions {
+		background-color: #ffffff;
+		flex: 1;
+		margin: 20px;
+		padding: 30px;
+		border-radius: 10px;
+		box-shadow: 5px 5px 10px #d1d3d8;
+	}
+
+	.hints {
+		padding: 20px;
+	}
+
+	.hints li {
+		padding: 20px 10px;
+		margin: 0px;
+		border-left: 3px solid #12c278;
+	}
+
+	.hints li:hover {
+		background-color: #c5deda;
+	}
+
+	.nutritions li {
+		line-height: 28pt;
+	}
+
+	h3 {
+		text-transform: uppercase;
+		letter-spacing: 2pt;
+		font-weight: normal;
+		font-size: 11pt;
+	}
+
+	i, .food-container b, h2 {
+		color: #12c278;
+	}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<input type="text" placeholder="Type the ingredient...">
+		<button>Search</button>
+	</div>
+	<div class="food-container">
+		<div class="hints"></div>
+		<div class="nutritions"></div>
+	</div>
+
+	<script>
+		const apiKey = '907e3e0371e8fc6b51cf120311f7f086';
+		const apiId = '58ec7697';
+		const proxy = 'https://cors-anywhere.herokuapp.com/';
+
+		$('button').on('click', e => {
+
+			const input = document.querySelector('input')
+			let value = input.value;
+
+			fetch(`https://api.edamam.com/api/food-database/parser?app_id=ca747d07&app_key=722fabaee32b8118f7b1cb2e32b137cf&ingr=${value}`)
+			.then(res => res.json())
+			.then(res => {
+				console.log(res);
+
+				for (var i = 0; i < res.hints.length; i++) {
+
+					let brand = res.hints[i].food.brand;
+
+					if(brand == undefined) {
+						brand = 'No brand';
+					}
+
+					$('.hints').append(
+						`<li data-food="${i}"><b>${res.hints[i].food.label}</b> | ${brand}</li>`
+						);
+				}
+
+				$('.hints').on('click', function getID (e) {
+					let ID = e.target.getAttribute('data-food');
+
+					$('.nutritions').html(
+						`
+						<div id="${ID}">
+						<h3>${res.hints[ID].food.category}</h3>
+						<h2>${res.hints[ID].food.label}</h2>
+						<div>
+						<h4>Nutrients</h4>
+						<ul>
+						<li><i class="fa fa-tint"></i> ${res.hints[ID].food.nutrients.FAT}</li>
+						<li><i>Kcal</i> ${res.hints[ID].food.nutrients.ENERC_KCAL}</li>
+						</ul>	
+						</div>
+						</div>
+						`)
+
+				})
+
+			}).catch(e => {
+				console.log(e)
+			})
+		})
+</script>
+
+
+</body>
+</html>
