@@ -134,11 +134,11 @@
 
 		function startTime() {
 
-			setTimeout(() => { 
-				time = 2;	
+			setTimeout(() => {
+				time = 2;
 				isPaused = false;
 
-				let workTime = setInterval(() => {				
+				let workTime = setInterval(() => {
 					if(time > 0 && !isPaused) {
 						minutes = time;
 						time--;
@@ -152,10 +152,10 @@
 					} else if (isPaused) {
 						clearInterval(workTime);
 					}
-				}, 1000);
+				}, 6000);
 
 				circle.classList.add('play');
-				circle.style.animationDuration = "4s";
+				circle.style.animationDuration = "1500s";
 
 				document.querySelector('svg').style.stroke = "#FA7472";
 				heading.innerHTML = "Time to work!";
@@ -172,7 +172,7 @@
 			newCircle.style.animationDuration = "4s";
 			document.querySelector('svg').style.stroke = "#fbb549";
 
-			let pauseTime = setInterval(() => {				
+			let pauseTime = setInterval(() => {
 				if(time > 0  && !isPaused) {
 					time--;
 					minutes = time;
