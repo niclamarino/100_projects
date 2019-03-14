@@ -24,7 +24,7 @@ var BudgetApp = function (_React$Component) {
 			monthlyBudget: 0,
 			incomesSum: 0,
 			expensesSum: 0,
-			incomes: [0],
+			incomes: [{ amount: 0, description: 'some description' }, { amount: 1, description: 'second description' }],
 			expenses: [0]
 		};
 		return _this;
@@ -34,6 +34,7 @@ var BudgetApp = function (_React$Component) {
 		key: 'handleAddValue',
 		value: function handleAddValue(e) {
 			var task = parseInt(e.target.elements.inputValue.value);
+			var description = e.target.elements.description.value;
 			var newIncome = void 0;
 			var newExpense = void 0;
 
@@ -42,7 +43,7 @@ var BudgetApp = function (_React$Component) {
 
 			if (e.target.elements.inputType.value === 'plus') {
 
-				newIncome = this.state.incomes.concat(task);
+				newIncome = this.state.incomes.concat({ amount: 'mamt', description: 'culo' });
 
 				for (var i = 0; i < newIncome.length; i++) {
 					updateIncomesSum += newIncome[i];
@@ -91,7 +92,7 @@ var BudgetApp = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var title = "Available budget in ";
+			var title = "Available Budget in ";
 			var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 			var d = new Date();
 			var year = d.getFullYear();
@@ -271,7 +272,11 @@ var Incomes = function (_React$Component5) {
 					'ul',
 					{ className: 'incomes' },
 					this.props.incomes.map(function (income, i) {
-						return React.createElement(Income, { key: i, income: income });
+						return React.createElement(Income, {
+							description: income.description,
+							key: i,
+							income: income.amount
+						});
 					})
 				)
 			);
@@ -299,6 +304,8 @@ var Income = function (_React$Component6) {
 				React.createElement(
 					'li',
 					null,
+					this.props.description,
+					' ',
 					this.props.income
 				)
 			);
