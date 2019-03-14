@@ -9,12 +9,16 @@ class BudgetApp extends React.Component {
 			monthlyBudget: 0,
 			incomesSum: 0,
 			expensesSum: 0,
-			incomes: [0],
+			  incomes: [
+    			{ amount: 0, description: 'some description' },
+    			{ amount: 1, description: 'second description' },
+    		],
 			expenses: [0]
 		}
 	}
 	handleAddValue(e) {
 		let task = parseInt(e.target.elements.inputValue.value);
+		let description = e.target.elements.description.value;
 		let newIncome;
 		let newExpense;
 
@@ -23,7 +27,7 @@ class BudgetApp extends React.Component {
 
 		if(e.target.elements.inputType.value === 'plus') {
 
-			newIncome = this.state.incomes.concat(task);
+			newIncome = this.state.incomes.concat({amount: task, description: description});
 
 			for (let i = 0; i < newIncome.length; i++) {
         		updateIncomesSum += newIncome[i];
@@ -69,7 +73,7 @@ class BudgetApp extends React.Component {
 		}
 	}
 	render() {
-		const title = "Available budget in "
+		const title = "Available Budget in "
 		const monthNames = ["January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December"
 		];
@@ -139,7 +143,13 @@ class Incomes extends React.Component {
 		return (
 			<div>
 				<ul className="incomes">
-					{this.props.incomes.map((income, i) => <Income key={i} income={income} />)}
+					{this.props.incomes.map((income, i) =>
+						<Income
+							description={income.description}
+							key={i}
+							income={income.amount}
+						/>
+					)}
 				</ul>
 			</div>
 		)
@@ -150,7 +160,7 @@ class Income extends React.Component {
 	render() {
 		return (
 			<div>
-				<li>{this.props.income}</li>
+				<li>{this.props.description} {this.props.income}</li>
 			</div>
 		)
 	}
@@ -172,7 +182,9 @@ class Expense extends React.Component {
 	render() {
 		return (
 			<div>
-				<li>{this.props.expense}</li>
+				<li>
+					{this.props.expense}
+				</li>
 			</div>
 		)
 	}
