@@ -75,3 +75,24 @@ button {
 	border-left: 10px solid #dd4246;
 }
 
+.budget-value {
+	display: inline-block;
+	float: right;
+}
+
+.delete-btn {
+	background-color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 2pt;
+	color: #dd4246;
+	transition: 0.3s;
+	opacity: 0;
+	margin-left: -80px;
+	cursor: pointer;
+}
+
+.incomes li:hover .delete-btn,
+.expenses li:hover .delete-btn {
+	opacity: 1;
+	margin-left: 0px;
+}

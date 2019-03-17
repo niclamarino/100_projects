@@ -19,21 +19,45 @@ var BudgetApp = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (BudgetApp.__proto__ || Object.getPrototypeOf(BudgetApp)).call(this, props));
 
 		_this.handleAddValue = _this.handleAddValue.bind(_this);
-		_this.handleUpdateBudget = _this.handleUpdateBudget.bind(_this);
+		_this.handleDelete = _this.handleDelete.bind(_this);
 		_this.state = {
 			monthlyBudget: 0,
 			incomesSum: 0,
 			expensesSum: 0,
-			incomes: [0],
-			expenses: [0]
+			incomes: [{ amount: 0, description: '' }],
+			expenses: [{ amount: 0, description: '' }]
 		};
 		return _this;
 	}
 
 	_createClass(BudgetApp, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var monthlyBudget = localStorage.getItem('monthlyBudget');
+			var incomesSum = localStorage.getItem('incomesSum');
+
+			this.setState(function () {
+				return {
+					monthlyBudget: monthlyBudget,
+					incomesSum: incomesSum
+				};
+			});
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps, prevState) {
+			if (prevState.monthlyBudget !== this.state.monthlyBudget) {
+
+				localStorage.setItem('monthlyBudget', this.state.monthlyBudget);
+				localStorage.setItem('incomesSum', this.state.incomesSum);
+			}
+		}
+	}, {
 		key: 'handleAddValue',
 		value: function handleAddValue(e) {
+			e.preventDefault();
 			var task = parseInt(e.target.elements.inputValue.value);
+			var description = e.target.elements.description.value;
 			var newIncome = void 0;
 			var newExpense = void 0;
 
@@ -41,21 +65,19 @@ var BudgetApp = function (_React$Component) {
 			var updateExpensesSum = 0;
 
 			if (e.target.elements.inputType.value === 'plus') {
+				newIncome = this.state.incomes.push({ amount: task, description: description });
 
-				newIncome = this.state.incomes.concat(task);
-
-				for (var i = 0; i < newIncome.length; i++) {
-					updateIncomesSum += newIncome[i];
+				for (var i = 0; i < this.state.incomes.length; i++) {
+					updateIncomesSum += this.state.incomes[i].amount;
 				}
 
 				updateExpensesSum = +this.state.expensesSum;
 			} else {
-				newExpense = this.state.expenses.concat(task);
+				newExpense = this.state.expenses.push({ amount: task, description: description });
 
-				for (var _i = 0; _i < newExpense.length; _i++) {
-					updateExpensesSum += newExpense[_i];
+				for (var _i = 0; _i < this.state.expenses.length; _i++) {
+					updateExpensesSum += this.state.expenses[_i].amount;
 				}
-
 				updateIncomesSum = +this.state.incomesSum;
 			}
 
@@ -68,30 +90,36 @@ var BudgetApp = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'handleUpdateBudget',
-		value: function handleUpdateBudget(e) {
-			e.preventDefault();
-			var task = parseInt(e.target.elements.inputValue.value);
-			var inputType = e.target.elements.inputType.value;
+		key: 'handleDelete',
+		value: function handleDelete(e) {
+			var type = e.target.parentNode.parentNode.className;
+			e.target.parentNode.remove();
+			var valueToRemove = parseInt(e.target.parentNode.getElementsByClassName('budget-value')[0].innerHTML);
 
-			if (inputType === 'plus') {
+			if (type == 'incomes') {
 				this.setState(function (prevState) {
 					return {
-						incomes: prevState.incomes.concat(task)
+						incomesSum: prevState.incomesSum - valueToRemove
 					};
 				});
 			} else {
 				this.setState(function (prevState) {
 					return {
-						expenses: prevState.expenses.concat(task)
+						expensesSum: prevState.expensesSum - valueToRemove
 					};
 				});
 			}
+
+			this.setState(function (prevState) {
+				return {
+					monthlyBudget: prevState.monthlyBudget - valueToRemove
+				};
+			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			var title = "Available budget in ";
+			var title = "Available Budget in ";
 			var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 			var d = new Date();
 			var year = d.getFullYear();
@@ -112,9 +140,9 @@ var BudgetApp = function (_React$Component) {
 				React.createElement(
 					'div',
 					{ className: 'inputsContainer' },
-					React.createElement(UpdateBudget, { handleUpdateBudget: this.handleUpdateBudget, handleAddValue: this.handleAddValue }),
-					React.createElement(Incomes, { incomes: this.state.incomes }),
-					React.createElement(Expenses, { expenses: this.state.expenses })
+					React.createElement(UpdateBudget, { handleAddValue: this.handleAddValue }),
+					React.createElement(Incomes, { incomes: this.state.incomes, handleDelete: this.handleDelete }),
+					React.createElement(Expenses, { expenses: this.state.expenses, handleDelete: this.handleDelete })
 				)
 			);
 		}
@@ -123,245 +151,176 @@ var BudgetApp = function (_React$Component) {
 	return BudgetApp;
 }(React.Component);
 
-var Header = function (_React$Component2) {
-	_inherits(Header, _React$Component2);
+;
 
-	function Header() {
-		_classCallCheck(this, Header);
+var Header = function Header(props) {
+	return React.createElement(
+		'h1',
+		null,
+		props.title
+	);
+};
 
-		return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-	}
-
-	_createClass(Header, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'h1',
+var Budget = function Budget(props) {
+	return React.createElement(
+		'div',
+		null,
+		React.createElement(
+			'p',
+			null,
+			React.createElement(
+				'b',
 				null,
-				this.props.title
-			);
-		}
-	}]);
-
-	return Header;
-}(React.Component);
-
-var Budget = function (_React$Component3) {
-	_inherits(Budget, _React$Component3);
-
-	function Budget() {
-		_classCallCheck(this, Budget);
-
-		return _possibleConstructorReturn(this, (Budget.__proto__ || Object.getPrototypeOf(Budget)).apply(this, arguments));
-	}
-
-	_createClass(Budget, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'div',
+				'Monthly Budget:'
+			),
+			' ',
+			props.monthlyBudget
+		),
+		React.createElement(
+			'p',
+			null,
+			React.createElement(
+				'b',
 				null,
+				'Monthly Income:'
+			),
+			' ',
+			props.incomesSum
+		),
+		React.createElement(
+			'p',
+			null,
+			React.createElement(
+				'b',
+				null,
+				'Monthly Expense:'
+			),
+			' ',
+			props.expensesSum
+		)
+	);
+};
+
+var UpdateBudget = function UpdateBudget(props) {
+	return React.createElement(
+		'div',
+		null,
+		React.createElement(
+			'form',
+			{ onSubmit: props.handleAddValue },
+			React.createElement(
+				'select',
+				{ name: 'inputType' },
 				React.createElement(
-					'p',
-					null,
-					React.createElement(
-						'b',
-						null,
-						'Monthly Budget:'
-					),
-					' ',
-					this.props.monthlyBudget
+					'option',
+					{ value: 'plus' },
+					'+'
 				),
 				React.createElement(
-					'p',
-					null,
-					React.createElement(
-						'b',
-						null,
-						'Monthly Income:'
-					),
-					' ',
-					this.props.incomesSum
-				),
-				React.createElement(
-					'p',
-					null,
-					React.createElement(
-						'b',
-						null,
-						'Monthly Expense:'
-					),
-					' ',
-					this.props.expensesSum
+					'option',
+					{ value: 'minus' },
+					'-'
 				)
-			);
-		}
-	}]);
+			),
+			React.createElement('input', { type: 'text', name: 'description' }),
+			React.createElement('input', { type: 'number', name: 'inputValue' }),
+			React.createElement(
+				'button',
+				{ name: 'add' },
+				'Add'
+			)
+		)
+	);
+};
 
-	return Budget;
-}(React.Component);
+var Incomes = function Incomes(props) {
+	return React.createElement(
+		'div',
+		null,
+		React.createElement(
+			'ul',
+			{ className: 'incomes' },
+			props.incomes.map(function (income, i) {
+				return React.createElement(Income, {
+					description: income.description,
+					key: i,
+					income: income.amount,
+					handleDelete: props.handleDelete
+				});
+			})
+		)
+	);
+};
 
-var UpdateBudget = function (_React$Component4) {
-	_inherits(UpdateBudget, _React$Component4);
-
-	function UpdateBudget() {
-		_classCallCheck(this, UpdateBudget);
-
-		return _possibleConstructorReturn(this, (UpdateBudget.__proto__ || Object.getPrototypeOf(UpdateBudget)).apply(this, arguments));
-	}
-
-	_createClass(UpdateBudget, [{
-		key: 'render',
-		value: function render() {
-			var _this5 = this;
-
-			return React.createElement(
-				'div',
+var Income = function Income(props) {
+	if (props.description) {
+		return React.createElement(
+			'li',
+			null,
+			React.createElement(
+				'button',
+				{ className: 'delete-btn', onClick: props.handleDelete },
+				'Delete'
+			),
+			React.createElement(
+				'b',
 				null,
-				React.createElement(
-					'form',
-					{ onSubmit: function onSubmit(e) {
-							_this5.props.handleUpdateBudget(e), _this5.props.handleAddValue(e);
-						} },
-					React.createElement(
-						'select',
-						{ name: 'inputType' },
-						React.createElement(
-							'option',
-							{ value: 'plus' },
-							'+'
-						),
-						React.createElement(
-							'option',
-							{ value: 'minus' },
-							'-'
-						)
-					),
-					React.createElement('input', { type: 'text', name: 'description' }),
-					React.createElement('input', { type: 'number', name: 'inputValue' }),
-					React.createElement(
-						'button',
-						{ name: 'add' },
-						'Add'
-					)
-				)
-			);
-		}
-	}]);
-
-	return UpdateBudget;
-}(React.Component);
-
-var Incomes = function (_React$Component5) {
-	_inherits(Incomes, _React$Component5);
-
-	function Incomes() {
-		_classCallCheck(this, Incomes);
-
-		return _possibleConstructorReturn(this, (Incomes.__proto__ || Object.getPrototypeOf(Incomes)).apply(this, arguments));
+				props.description
+			),
+			React.createElement(
+				'span',
+				{ className: 'budget-value' },
+				props.income
+			)
+		);
+	} else {
+		return '';
 	}
+};
 
-	_createClass(Incomes, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'div',
+var Expenses = function Expenses(props) {
+	return React.createElement(
+		'div',
+		null,
+		React.createElement(
+			'ul',
+			{ className: 'expenses' },
+			props.expenses.map(function (expense, i) {
+				return React.createElement(Expense, {
+					description: expense.description,
+					key: i,
+					expense: expense.amount,
+					handleDelete: props.handleDelete
+				});
+			})
+		)
+	);
+};
+
+var Expense = function Expense(props) {
+	if (props.description) {
+		return React.createElement(
+			'li',
+			null,
+			React.createElement(
+				'button',
+				{ className: 'delete-btn', onClick: props.handleDelete },
+				'Delete'
+			),
+			React.createElement(
+				'b',
 				null,
-				React.createElement(
-					'ul',
-					{ className: 'incomes' },
-					this.props.incomes.map(function (income, i) {
-						return React.createElement(Income, { key: i, income: income });
-					})
-				)
-			);
-		}
-	}]);
-
-	return Incomes;
-}(React.Component);
-
-var Income = function (_React$Component6) {
-	_inherits(Income, _React$Component6);
-
-	function Income() {
-		_classCallCheck(this, Income);
-
-		return _possibleConstructorReturn(this, (Income.__proto__ || Object.getPrototypeOf(Income)).apply(this, arguments));
+				props.description
+			),
+			React.createElement(
+				'span',
+				{ className: 'budget-value' },
+				props.expense
+			)
+		);
+	} else {
+		return '';
 	}
-
-	_createClass(Income, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'li',
-					null,
-					this.props.income
-				)
-			);
-		}
-	}]);
-
-	return Income;
-}(React.Component);
-
-var Expenses = function (_React$Component7) {
-	_inherits(Expenses, _React$Component7);
-
-	function Expenses() {
-		_classCallCheck(this, Expenses);
-
-		return _possibleConstructorReturn(this, (Expenses.__proto__ || Object.getPrototypeOf(Expenses)).apply(this, arguments));
-	}
-
-	_createClass(Expenses, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'ul',
-					{ className: 'expenses' },
-					this.props.expenses.map(function (expense) {
-						return React.createElement(Expense, { key: expense, expense: expense });
-					})
-				)
-			);
-		}
-	}]);
-
-	return Expenses;
-}(React.Component);
-
-var Expense = function (_React$Component8) {
-	_inherits(Expense, _React$Component8);
-
-	function Expense() {
-		_classCallCheck(this, Expense);
-
-		return _possibleConstructorReturn(this, (Expense.__proto__ || Object.getPrototypeOf(Expense)).apply(this, arguments));
-	}
-
-	_createClass(Expense, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'li',
-					null,
-					this.props.expense
-				)
-			);
-		}
-	}]);
-
-	return Expense;
-}(React.Component);
+};
 
 ReactDOM.render(React.createElement(BudgetApp, null), root);
