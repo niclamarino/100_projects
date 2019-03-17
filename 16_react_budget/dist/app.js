@@ -24,8 +24,13 @@ var BudgetApp = function (_React$Component) {
 			monthlyBudget: 0,
 			incomesSum: 0,
 			expensesSum: 0,
+<<<<<<< HEAD
 			incomes: [{ amount: 0, description: '' }],
 			expenses: [{ amount: 0, description: '' }]
+=======
+			incomes: [{ amount: 0, description: 'some description' }, { amount: 1, description: 'second description' }],
+			expenses: [0]
+>>>>>>> f3e3f53aa2e2a42b1bb5697841d18aac160630e4
 		};
 		return _this;
 	}
@@ -67,8 +72,15 @@ var BudgetApp = function (_React$Component) {
 			if (e.target.elements.inputType.value === 'plus') {
 				newIncome = this.state.incomes.push({ amount: task, description: description });
 
+<<<<<<< HEAD
 				for (var i = 0; i < this.state.incomes.length; i++) {
 					updateIncomesSum += this.state.incomes[i].amount;
+=======
+				newIncome = this.state.incomes.concat({ amount: 'mamt', description: 'culo' });
+
+				for (var i = 0; i < newIncome.length; i++) {
+					updateIncomesSum += newIncome[i];
+>>>>>>> f3e3f53aa2e2a42b1bb5697841d18aac160630e4
 				}
 
 				updateExpensesSum = +this.state.expensesSum;
@@ -217,9 +229,21 @@ var UpdateBudget = function UpdateBudget(props) {
 					'+'
 				),
 				React.createElement(
+<<<<<<< HEAD
 					'option',
 					{ value: 'minus' },
 					'-'
+=======
+					'ul',
+					{ className: 'incomes' },
+					this.props.incomes.map(function (income, i) {
+						return React.createElement(Income, {
+							description: income.description,
+							key: i,
+							income: income.amount
+						});
+					})
+>>>>>>> f3e3f53aa2e2a42b1bb5697841d18aac160630e4
 				)
 			),
 			React.createElement('input', { type: 'text', name: 'description' }),
@@ -265,6 +289,7 @@ var Income = function Income(props) {
 			React.createElement(
 				'b',
 				null,
+<<<<<<< HEAD
 				props.description
 			),
 			React.createElement(
@@ -275,6 +300,29 @@ var Income = function Income(props) {
 		);
 	} else {
 		return '';
+=======
+				React.createElement(
+					'li',
+					null,
+					this.props.description,
+					' ',
+					this.props.income
+				)
+			);
+		}
+	}]);
+
+	return Income;
+}(React.Component);
+
+var Expenses = function (_React$Component7) {
+	_inherits(Expenses, _React$Component7);
+
+	function Expenses() {
+		_classCallCheck(this, Expenses);
+
+		return _possibleConstructorReturn(this, (Expenses.__proto__ || Object.getPrototypeOf(Expenses)).apply(this, arguments));
+>>>>>>> f3e3f53aa2e2a42b1bb5697841d18aac160630e4
 	}
 };
 
