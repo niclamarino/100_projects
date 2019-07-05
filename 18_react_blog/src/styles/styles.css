@@ -1,0 +1,46 @@
+@import "./test";
+
+body {
+	background: #e7e7e7;
+	font-family: "Montserrat", sans-serif;
+}
+
+.active {
+	font-weight: bold;
+}
+
+li {
+	list-style: none;
+}
+
+a {
+	margin-left: 20px;
+}
+
+#message {
+	display: none;
+}
+
+.preview {
+	width: 100%;
+	height: 30px;
+	background: #fff;
+}
+
+.date {
+	clear: both;
+	display: block;
+}
+
+/* Posts */
+
+.posts-list {
+	display: flex;
+}
+
+.post-prev {
+	background: #fff;
+	box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.3);
+	flex: 1;
+	padding: 20px;
+}
