@@ -38,6 +38,10 @@ Simple text and images slideshow presentation
 14. <b>Nutrition App</b><br>
 Simple app with API fetching to get nutrition information
 
+15. <b>React ToDo list</b><br>
+
+16. <b>React Budget</b><br>
+
 17. <b>React Search</b><br>
 A React search autocomplete. I've used create-react-app and no webpack
 
