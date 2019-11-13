@@ -49,3 +49,18 @@ A React search autocomplete. I've used create-react-app and no webpack
 
 19. <b>CRUD app</b><br>
 Simple CRUD app using React Hooks
+
+20. <b>React Checkout</b><br>
+Checkout for ecommerce using React
+
+21. <b>React Ticketing</b><br>
+
+22. <b>React Ecommerce</b><br>
+
+23. <b>React Email chips</b><br>
+
+24. <b>Product gallery</b><br>
+Ecommerce Product gallery with Zoom-in and slideshow
+
+25. <b>Typerace</b><br>
+React Game using Hooks
