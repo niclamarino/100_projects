@@ -1,0 +1,125 @@
+body, html {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+body {
+  background: #f4f4f4;
+}
+
+.credits {
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+  font-size: 9pt;
+}
+
+.credits a {
+  text-decoration: none;
+  color: #00659d;
+}
+
+.gallery {
+  padding: 10px;
+  background: white;
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 500px;
+  transform: translate(-50%,-50%);
+}
+
+.miniatures {
+  flex: 0.4;
+  display: flex;
+  flex-direction: column;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.miniature {
+  transition: all .3s;
+}
+
+.miniature:hover {
+  opacity: 0.8;
+}
+
+.img-container {
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  height: 535px;
+}
+
+picture {
+  transform-origin: 0px 0px;
+  position: absolute;
+}
+
+.big-img {
+  flex: 1.6;
+  margin-left: 5px;
+  position: relative;
+}
+
+.big-img img {
+  transform-origin: center;
+  position: relative;
+}
+
+.gallery img {
+  width: 100%;
+}
+
+.slider {
+  background: rgb(0,0,0,0.8);
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  overflow: scroll;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  padding: 100px 0px;
+  opacity: 0;
+  display: none;
+  transition: all 2s;
+}
+
+.slider img {
+  width: 100%;
+  max-width: 50%;
+  cursor: pointer;
+}
+
+.close {
+  width: 30px;
+  height: 30px;
+  background-image: url(https://i-love-png.com/images/white-x-png-4_14395.png);
+  background-size: contain;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  cursor: pointer;
+}
+
+.prev, .next {
+  top: 50%;
+  position: absolute;
+  transform: translateY(-50%);
+  color: white;
+  cursor: pointer;
+}
+
+.prev {
+  left: 10%;
+}
+
+.next {
+  right: 10%;
+}

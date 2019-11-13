@@ -1,0 +1,15 @@
+body {
+	background: grey;
+	color: #fff;
+	font-family: Arial;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+}
+
+span {
+	display: block;
+	margin: 15px 0px;
+}
