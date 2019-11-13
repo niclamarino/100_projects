@@ -29,7 +29,7 @@ Slideshow with click and drag navigation
 10. <b>Random number generator</b>
 
 11. <b>Slideshow</b><br>
-Simple text + images slideshow presentation
+Simple text and images slideshow presentation
 
 14. <b>Nutrition App</b><br>
 Simple app with API fetching to get nutrition information
